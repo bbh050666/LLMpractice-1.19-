@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llm-practice-course"
+version = "0.1.0"
+description = "A progressive, runnable LLM engineering curriculum"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+api = ["openai>=1.66,<3"]
+inference = [
+  "huggingface-hub>=0.24,<1",
+  "transformers>=4.45,<5",
+  "torch>=2.2",
+  "accelerate>=0.33,<2",
+]
+train = [
+  "huggingface-hub>=0.24,<1",
+  "transformers>=4.45,<4.50",
+  "torch>=2.2",
+  "accelerate>=0.33,<2",
+  "datasets>=2.20,<4",
+  "peft>=0.12,<1",
+  # 示例按该 API 窗口编写；TRL 的 Trainer 参数在版本间变化较快。
+  "trl>=0.15,<0.16",
+]
+
+[tool.setuptools]
+py-modules = []
