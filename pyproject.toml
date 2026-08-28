@@ -10,7 +10,7 @@ requires-python = ">=3.10"
 dependencies = []
 
 [project.optional-dependencies]
-api = ["openai>=1.30,<2"]
+api = ["openai>=1.66,<3"]
 inference = [
   "huggingface-hub>=0.24,<1",
   "transformers>=4.45,<5",
@@ -18,10 +18,14 @@ inference = [
   "accelerate>=0.33,<2",
 ]
 train = [
-  "llm-practice-course[inference]",
+  "huggingface-hub>=0.24,<1",
+  "transformers>=4.45,<4.50",
+  "torch>=2.2",
+  "accelerate>=0.33,<2",
   "datasets>=2.20,<4",
   "peft>=0.12,<1",
-  "trl>=0.11,<1",
+  # 示例按该 API 窗口编写；TRL 的 Trainer 参数在版本间变化较快。
+  "trl>=0.15,<0.16",
 ]
 
 [tool.setuptools]

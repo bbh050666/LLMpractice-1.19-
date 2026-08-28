@@ -91,6 +91,9 @@ python chapters/03_local_inference/infer.py \
 运行一个短训练：
 
 ```bash
+# 先在 CPU 上检查格式，避免启动训练后才发现坏数据
+python tools/validate_data.py sft data/sft_demo.jsonl
+
 python chapters/04_sft_lora/train.py \
   --model-id Qwen/Qwen2.5-0.5B-Instruct \
   --dataset data/sft_demo.jsonl --output-dir outputs/sft-lora \
@@ -104,6 +107,8 @@ LoRA 只训练低秩适配器，显著减少可训练参数。真实项目中需
 DPO 数据每行包含 `prompt`、`chosen` 和 `rejected`：
 
 ```bash
+python tools/validate_data.py preference data/preferences_demo.jsonl
+
 python chapters/05_alignment/dpo_train.py \
   --model-id Qwen/Qwen2.5-0.5B-Instruct \
   --dataset data/preferences_demo.jsonl --output-dir outputs/dpo \
@@ -124,7 +129,7 @@ DPO 直接从偏好对学习，工程链路通常比 PPO 短。PPO 则需要策�
 
 ```bash
 python -m unittest discover -s tests -v
-python -m compileall chapters tests
+python -m compileall chapters tools tests
 ```
 
 ## 目录结构
@@ -133,4 +138,5 @@ python -m compileall chapters tests
 chapters/       每章可独立执行的示例
 data/           可直接跑通流程的微型数据
 tests/          不需要 GPU/API 的单元测试
+tools/          训练前即可运行的数据质量工具
 ```

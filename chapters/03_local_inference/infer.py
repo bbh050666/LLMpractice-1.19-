@@ -14,6 +14,8 @@ def main() -> None:
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_path)
+    if tokenizer.pad_token_id is None:
+        tokenizer.pad_token = tokenizer.eos_token
     model = AutoModelForCausalLM.from_pretrained(
         args.model_path,
         torch_dtype="auto",
@@ -26,7 +28,12 @@ def main() -> None:
     text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
     inputs = tokenizer(text, return_tensors="pt").to(model.device)
     with torch.inference_mode():
-        output = model.generate(**inputs, max_new_tokens=args.max_new_tokens, do_sample=False)
+        output = model.generate(
+            **inputs,
+            max_new_tokens=args.max_new_tokens,
+            do_sample=False,
+            pad_token_id=tokenizer.pad_token_id,
+        )
     generated = output[0, inputs["input_ids"].shape[1] :]
     print(tokenizer.decode(generated, skip_special_tokens=True))
 
